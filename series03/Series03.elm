@@ -3,16 +3,17 @@ module Series03 exposing (..)
 import Html exposing (..)
 import Html.Events exposing (..)
 import Html.Attributes exposing (..)
+import Tuple exposing (..)
 import RNA exposing (..)
 
 
 type alias Model =
-    RNA
+    ( RNA, Bool )
 
 
 initialModel : Model
 initialModel =
-    Nil
+    ( Nil, False )
 
 
 type Msg
@@ -23,38 +24,50 @@ type Msg
     | Complement
     | Inverse
     | Case
+    | Reset
 
 
 update : Msg -> Model -> Model
 update msg model =
     case msg of
         U ->
-            extend model RNA.U
+            ( extend (first model) RNA.U, second model )
 
         A ->
-            extend model RNA.A
+            ( extend (first model) RNA.A, second model )
 
         C ->
-            extend model RNA.C
+            ( extend (first model) RNA.C, second model )
 
         G ->
-            extend model RNA.G
+            ( extend (first model) RNA.G, second model )
 
         Complement ->
-            complement model
+            ( complement (first model), second model )
 
         Inverse ->
-            inverse model
+            ( inverse (first model), second model )
 
         Case ->
-            inverse model
+            ( first model, not (second model) )
+
+        Reset ->
+            ( Nil, second model )
 
 
-buttonStyle : Attribute Msg
-buttonStyle =
+buttonStyleBase : Attribute Msg
+buttonStyleBase =
     style
         [ ( "height", "30px" )
         , ( "width", "50px" )
+        ]
+
+
+buttonStyleAction : Attribute Msg
+buttonStyleAction =
+    style
+        [ ( "height", "30px" )
+        , ( "width", "150px" )
         ]
 
 
@@ -67,10 +80,6 @@ textStyle =
         ]
 
 
-
--- TODO Fügen Sie außerdem einen Button hinzu, um die aktuelle Eingabe zu lösen
-
-
 checkbox : Msg -> String -> Html Msg
 checkbox msg title =
     label [] [ input [ type_ "checkbox", onClick msg ] [], text title ]
@@ -79,13 +88,14 @@ checkbox msg title =
 view : Model -> Html Msg
 view model =
     div []
-        [ div [ textStyle ] [ text (toString model) ]
-        , button [ buttonStyle, onClick U ] [ text "U" ]
-        , button [ buttonStyle, onClick A ] [ text "A" ]
-        , button [ buttonStyle, onClick C ] [ text "C" ]
-        , button [ buttonStyle, onClick G ] [ text "G" ]
-        , button [ buttonStyle, onClick Complement ] [ text "Komplement" ]
-        , button [ buttonStyle, onClick Inverse ] [ text "Invers" ]
+        [ div [ textStyle ] [ text (printRNA (second model) (first model)) ]
+        , button [ buttonStyleBase, onClick U ] [ text "U" ]
+        , button [ buttonStyleBase, onClick A ] [ text "A" ]
+        , button [ buttonStyleBase, onClick C ] [ text "C" ]
+        , button [ buttonStyleBase, onClick G ] [ text "G" ]
+        , button [ buttonStyleAction, onClick Complement ] [ text "Komplement" ]
+        , button [ buttonStyleAction, onClick Inverse ] [ text "Invers" ]
+        , button [ buttonStyleAction, onClick Reset ] [ text "Löschen" ]
         , checkbox Case "Kleinschreibung"
         ]
 

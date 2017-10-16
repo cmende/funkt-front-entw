@@ -4,7 +4,8 @@
     "repository": "https://github.com/user/project.git",
     "license": "BSD3",
     "source-directories": [
-        "series01", "series02"
+        "lecture03",
+        "series01", "series02", "series03"
     ],
     "exposed-modules": [],
     "dependencies": {
