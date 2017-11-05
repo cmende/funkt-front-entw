@@ -28,29 +28,30 @@ extend r b =
             Cons x (extend xs b)
 
 
+complementBase : Base -> Base
+complementBase b =
+    case b of
+        U ->
+            A
+
+        A ->
+            U
+
+        C ->
+            G
+
+        G ->
+            C
+
+
 complement : RNA -> RNA
 complement r =
-    let
-        complementBase b =
-            case b of
-                U ->
-                    A
+    case r of
+        Nil ->
+            Nil
 
-                A ->
-                    U
-
-                C ->
-                    G
-
-                G ->
-                    C
-    in
-        case r of
-            Nil ->
-                Nil
-
-            Cons x xs ->
-                Cons (complementBase x) (complement xs)
+        Cons x xs ->
+            Cons (complementBase x) (complement xs)
 
 
 inverse : RNA -> RNA
