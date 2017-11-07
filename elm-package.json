@@ -5,7 +5,7 @@
     "license": "BSD3",
     "source-directories": [
         "lecture",
-        "series01", "series02", "series03", "series04", "series05"
+        "series01", "series02", "series03", "series04", "series05", "series06"
     ],
     "exposed-modules": [],
     "dependencies": {
