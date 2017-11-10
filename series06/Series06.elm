@@ -30,6 +30,12 @@ filter p =
         []
 
 
+xor : List Bool -> Bool
+xor = List.foldr Basics.xor False
+
+unzip : List (a, b) -> (List a, List b)
+unzip = List.foldr (\(x,y) (xs,ys) -> (x :: xs, y :: ys)) ([],[])
+
 
 -- Aufgabe 2
 
